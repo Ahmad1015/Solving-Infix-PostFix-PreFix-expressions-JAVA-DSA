@@ -1,6 +1,20 @@
+import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
+        Scanner input = new Scanner(System.in);
+        String exp = input.nextLine();
+        String[] s;
+        if (exp.contains(","))
+            s = exp.split(",");
+        else
+            s = exp.split(" ");
+        
+        for(int i=0;i<s.length;i++){
+            
+            
+        }
 
+        
     }
 }
 
