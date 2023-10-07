@@ -1,11 +1,4 @@
-// deal with them per Function
-// Cannot deal with negatives
 /* 
-
-Division by Zero: If your expression involves division, you should check for division by zero errors.
-
-Number Format Exception: When trying to parse a string to a number (integer, float, double), a NumberFormatException can occur if the string does not contain a parsable number.
-
 Stack Overflow/Underflow: If you’re using a stack data structure to evaluate the postfix expression, you might encounter  underflow errors. This can happen if you try to pop an element from an empty stack (underflow) */
 
 
@@ -32,7 +25,7 @@ public class Main{
             evalutePostFix(s,arr);    
         }
         catch(Exception e){
-            // Handle the Exception
+            System.out.println(e.getMessage());
         }                                       
     }
 
@@ -107,8 +100,15 @@ public class Main{
                         solution = operand1 - operand2;
                     else if(operator_ascii == 43)
                         solution = operand1 + operand2;
-                    else if(operator_ascii == 47)
-                        solution = operand1 / operand2;
+                    else if(operator_ascii == 47){
+                        try{
+                            solution = operand1 / operand2;
+                        }
+                        catch(ArithmeticException e){
+                            throw new Exception("Divison by Zero");
+                        }
+                    }
+                        
                     else
                         throw new Exception("Invalid Operator");
                 }
