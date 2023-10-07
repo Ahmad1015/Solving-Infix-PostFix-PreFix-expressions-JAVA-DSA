@@ -2,10 +2,6 @@
 // Cannot deal with negatives
 /* 
 
-Insufficient Operands: In postfix expressions, every operator must have exactly two operands. If an operator does not have enough operands, this is an error1.
-
-Extra Operands: Similarly, if there are extra operands (numbers) that do not have corresponding operators, this is also an error1.
-
 Division by Zero: If your expression involves division, you should check for division by zero errors.
 
 Number Format Exception: When trying to parse a string to a number (integer, float, double), a NumberFormatException can occur if the string does not contain a parsable number.
@@ -19,7 +15,7 @@ public class Main{
         Scanner input = new Scanner(System.in);
         System.out.println("Enter Postfix Expression: ");
         String exp = input.nextLine();
-
+        exp = exp.trim();
         List arr = new Stack(exp.length());
         String[] s;
         if (exp.contains(","))
@@ -44,18 +40,27 @@ public class Main{
         if(expression.length==0)                                                            // Handling Empty Input
             return false;
 
+        int operators=0;
+        int operands=0;
         for(String subset : expression){                                                    // Handling Invalid Characters and operators
             try{
-                if(subset != "+"||subset != "-"|| subset !="*"|| subset !="/")
-                    return false;
                 int num = Integer.parseInt(subset);
+                operands++;
+                continue;
             }
             catch(NumberFormatException e){
-                return false;
             }
-                
+            if(!subset.equals("+") && !subset.equals("-") && !subset.equals("*") && !subset.equals("/"))
+                    return false;
+                else
+                    operators++;        
         }
-        return true;
+        
+        if(operators+1 == operands)                                                     // Handling invalid number of operators and operands
+            return true;
+        else
+            return false;
+        
     }
 
     public static void evalutePostFix (String[] s,List arr) throws Exception{
