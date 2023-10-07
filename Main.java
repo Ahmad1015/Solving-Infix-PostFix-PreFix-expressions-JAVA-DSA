@@ -12,7 +12,7 @@ Division by Zero: If your expression involves division, you should check for div
 
 Number Format Exception: When trying to parse a string to a number (integer, float, double), a NumberFormatException can occur if the string does not contain a parsable number.
 
-Stack Overflow/Underflow: If you’re using a stack data structure to evaluate the postfix expression, you might encounter stack overflow or underflow errors. This can happen if you try to pop an element from an empty stack (underflow), or if you try to push an element onto a full stack (overflow). */
+Stack Overflow/Underflow: If you’re using a stack data structure to evaluate the postfix expression, you might encounter  underflow errors. This can happen if you try to pop an element from an empty stack (underflow) */
 
 
 import java.util.Scanner;
@@ -32,6 +32,7 @@ public class Main{
         // Do function calls here    
         evalutePostFix(s,arr);                                            
     }
+
     public static void evalutePostFix(String[] s,List arr){
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
