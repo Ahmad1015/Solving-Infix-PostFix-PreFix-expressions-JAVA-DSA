@@ -1,14 +1,12 @@
 // deal with them per Function
 // Cannot deal with negatives
-/*Empty Input: If the input expression is empty, your program should handle this gracefully1.
+/* 
 
-Invalid Characters: Your program should be able to handle any characters that are not valid operands or operators2. For example, alphabets or special characters other than ‘+’, ‘-’, ‘*’, ‘/’.
-
-Insufficient Operands: In postfix expressions, every operator must have exactly two operands3. If an operator does not have enough operands, this is an error1.
+Insufficient Operands: In postfix expressions, every operator must have exactly two operands. If an operator does not have enough operands, this is an error1.
 
 Extra Operands: Similarly, if there are extra operands (numbers) that do not have corresponding operators, this is also an error1.
 
-Division by Zero: If your expression involves division, you should check for division by zero errors1.
+Division by Zero: If your expression involves division, you should check for division by zero errors.
 
 Number Format Exception: When trying to parse a string to a number (integer, float, double), a NumberFormatException can occur if the string does not contain a parsable number.
 
@@ -29,6 +27,10 @@ public class Main{
         else
             s = exp.split(" ");
         
+        if(!isValid(s)){                                                                  
+            System.out.println("Invalid Input - Exiting with Code 1");
+            System.exit(1);
+        }
         try{
             // Do function calls here    
             evalutePostFix(s,arr);    
@@ -36,6 +38,24 @@ public class Main{
         catch(Exception e){
             // Handle the Exception
         }                                       
+    }
+
+    public static Boolean isValid(String[] expression){                   
+        if(expression.length==0)                                                            // Handling Empty Input
+            return false;
+
+        for(String subset : expression){                                                    // Handling Invalid Characters and operators
+            try{
+                if(subset != "+"||subset != "-"|| subset !="*"|| subset !="/")
+                    return false;
+                int num = Integer.parseInt(subset);
+            }
+            catch(NumberFormatException e){
+                return false;
+            }
+                
+        }
+        return true;
     }
 
     public static void evalutePostFix (String[] s,List arr) throws Exception{
@@ -72,7 +92,7 @@ public class Main{
                 }
             }
             else{
-            System.exit(400);
+            System.exit(1);
             }
             if(flag_okay_to_push){
                 try{
