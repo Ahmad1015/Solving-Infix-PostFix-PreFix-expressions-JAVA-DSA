@@ -38,7 +38,7 @@ public class Main{
         }                                       
     }
 
-    public static void evalutePostFix throw Exception(String[] s,List arr){
+    public static void evalutePostFix (String[] s,List arr) throws Exception{
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
         boolean flag_num=false;
