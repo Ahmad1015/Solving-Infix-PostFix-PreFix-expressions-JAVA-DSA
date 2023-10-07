@@ -49,9 +49,12 @@ public class Main{
                     operators++;        
         }
         
-        if(operators+1 == operands)                                                     // Handling invalid number of operators and operands
+        if(operators+1 != operands)                                                     // Handling invalid number of operators and operands
+            return false;
+        
+        if(expression[expression.length-1].equals("+")|| expression[expression.length-1].equals("-")|| expression[expression.length-1].equals("*")||expression[expression.length-1].equals("/"))
             return true;
-        else
+        else 
             return false;
         
     }
