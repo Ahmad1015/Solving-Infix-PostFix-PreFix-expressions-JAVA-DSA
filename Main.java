@@ -1,15 +1,37 @@
+// Cannot deal with negatives
+/*Empty Input: If the input expression is empty, your program should handle this gracefully1.
+
+Invalid Characters: Your program should be able to handle any characters that are not valid operands or operators2. For example, alphabets or special characters other than ‘+’, ‘-’, ‘*’, ‘/’.
+
+Insufficient Operands: In postfix expressions, every operator must have exactly two operands3. If an operator does not have enough operands, this is an error1.
+
+Extra Operands: Similarly, if there are extra operands (numbers) that do not have corresponding operators, this is also an error1.
+
+Division by Zero: If your expression involves division, you should check for division by zero errors1.
+
+Number Format Exception: When trying to parse a string to a number (integer, float, double), a NumberFormatException can occur if the string does not contain a parsable number.
+
+Stack Overflow/Underflow: If you’re using a stack data structure to evaluate the postfix expression, you might encounter stack overflow or underflow errors. This can happen if you try to pop an element from an empty stack (underflow), or if you try to push an element onto a full stack (overflow). */
+
+
 import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
+        System.out.println("Enter Postfix Expression: ");
         String exp = input.nextLine();
+
         List arr = new Stack(exp.length());
         String[] s;
         if (exp.contains(","))
             s = exp.split(",");
         else
             s = exp.split(" ");
-                                                    
+
+            
+        evalutePostFix(s,arr);                                            
+    }
+    public static void evalutePostFix(String[] s,List arr){
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
         boolean flag_num=false;
@@ -65,6 +87,7 @@ public class Main{
             
         }
         System.out.println("Final answer is : "+arr.pop()); 
+    
     }
 }
 
