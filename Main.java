@@ -1,7 +1,3 @@
-/* 
-Stack Overflow/Underflow: If you’re using a stack data structure to evaluate the postfix expression, you might encounter  underflow errors. This can happen if you try to pop an element from an empty stack (underflow) */
-
-
 import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
@@ -116,7 +112,8 @@ public class Main{
                         throw new Exception("Invalid Operator");
                 }
                 catch(Exception e){
-                    System.out.println("Caught an exception: " + e.getMessage());
+                    String str = "Caught an exception: " + e.getMessage();
+                    throw new Exception(str);
                 }
                 arr.push(solution);
                 flag_okay_to_push=false;
@@ -124,7 +121,6 @@ public class Main{
             
         }
         System.out.println("Final answer is : "+arr.pop()); 
-    
     }
 }
 
