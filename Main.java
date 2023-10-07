@@ -28,12 +28,17 @@ public class Main{
             s = exp.split(",");
         else
             s = exp.split(" ");
-
-        // Do function calls here    
-        evalutePostFix(s,arr);                                            
+        
+        try{
+            // Do function calls here    
+            evalutePostFix(s,arr);    
+        }
+        catch(Exception e){
+            // Handle the Exception
+        }                                       
     }
 
-    public static void evalutePostFix(String[] s,List arr){
+    public static void evalutePostFix throw Exception(String[] s,List arr){
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
         boolean flag_num=false;
@@ -59,6 +64,8 @@ public class Main{
                     System.out.println(arr.toString());
                 else{
                 operand2 = arr.pop();
+                if(arr.isEmpty())
+                        throw new Exception("Only 1 variable left in Stack");
                 operand1 = arr.pop();
                 flag_operator=false;
                 flag_okay_to_push=true;
