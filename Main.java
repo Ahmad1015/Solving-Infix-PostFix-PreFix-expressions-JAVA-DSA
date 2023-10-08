@@ -1,11 +1,12 @@
+import java.util.Stack;
 import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter Postfix Expression: ");
+        System.out.println("Enter Expression: ");
         String exp = input.nextLine();
         exp = exp.trim();
-        List arr = new Stack(exp.length());
+        List arr = new StackList(exp.length());
         String[] s;
         if (exp.contains(","))
             s = exp.split(",");
@@ -18,7 +19,8 @@ public class Main{
         }
         try{
             // Do function calls here    
-            evalutePostFix(s,arr);    
+            //evalutePostFix(s,arr);
+            evalutePreFix(s, arr);    
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -33,7 +35,7 @@ public class Main{
         int operands=0;
         for(String subset : expression){                                                    // Handling Invalid Characters and operators
             try{
-                int num = Integer.parseInt(subset);
+                Integer.parseInt(subset);
                 operands++;
                 continue;
             }
@@ -48,14 +50,41 @@ public class Main{
         if(operators+1 != operands)                                                     // Handling invalid number of operators and operands
             return false;
         
-        if(expression[expression.length-1].equals("+")|| expression[expression.length-1].equals("-")|| expression[expression.length-1].equals("*")||expression[expression.length-1].equals("/"))
-            return true;
-        else 
-            return false;
+        return true;
         
     }
 
+    /**
+     * 
+     * Here's how it works:
+     * 1. Reverse the prefix expression: Since stack uses LIFO (Last In First Out) property, we need to reverse the prefix expression.
+     * 2. Scan the reversed expression: Scan the reversed expression from left to right.
+     *    - Operand: If the scanned character is an operand, push it onto the stack.
+     *    - Operator: If the scanned character is an operator, pop two elements from the stack, perform the operation and push the result back onto the stack.
+     * 3. At the end of the scanning, the stack will contain the final result of the prefix expression.
+     */
+    public static void evalutePreFix(String[] s, List arr) throws Exception{
+        if(s[s.length-1].equals("+") || s[s.length-1].equals("-") || s[s.length-1].equals("*") || s[s.length-1].equals("/"))
+            throw new Exception("Invalid Expression for PreFix");
+                                                                                // Reversing the Order of Prefix expression by using built in Stack
+        Stack<String> stack = new Stack<>();
+        for(String element: s){ 
+            stack.push(element);
+        }
+        for (int i = 0; i < s.length; i++) {
+            s[i] = stack.pop();
+        }
+        operations(true, s,arr);
+    }
+
     public static void evalutePostFix (String[] s,List arr) throws Exception{
+        if(!s[s.length-1].equals("+") && !s[s.length-1].equals("-") && !s[s.length-1].equals("*") && !s[s.length-1].equals("/"))
+            throw new Exception("Invalid Expression for PostFix");
+        operations(false,s,arr);
+    }
+
+    //  Important note : In postfix , we first pop operand 2 , in prefix we first pop operand 1
+    public static void operations(boolean flag,String[] s,List arr) throws Exception{
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
         boolean flag_num=false;
@@ -80,10 +109,16 @@ public class Main{
                 if(arr.isEmpty())
                     System.out.println(arr.toString());
                 else{
-                operand2 = arr.pop();
+                    if(flag)
+                        operand1 = arr.pop();
+                    else
+                        operand2 = arr.pop();
                 if(arr.isEmpty())
-                        throw new Exception("Only 1 variable left in Stack");
-                operand1 = arr.pop();
+                        throw new Exception("Only 1 variable left in StackList");
+                if(flag)
+                    operand2 = arr.pop();
+                else
+                    operand1 = arr.pop();
                 flag_operator=false;
                 flag_okay_to_push=true;
                 }
@@ -120,9 +155,11 @@ public class Main{
             }
             
         }
-        System.out.println("Final answer is : "+arr.pop()); 
+        System.out.println("Final answer is : "+arr.pop());
     }
 }
+
+
 
 abstract class List{
     abstract boolean push(int element);
@@ -130,23 +167,23 @@ abstract class List{
     abstract boolean isEmpty();
     abstract boolean isFull();
 }
-class Stack extends List{
+class StackList extends List{
     int top;
     int N;                  // Total Size of Array;
     int arr[];
-    public Stack(){
+    public StackList(){
         top=0;
         N=5;
         arr = new int[N];
     }
-    public Stack(int size){
+    public StackList(int size){
         top = 0;
         N = size;
         arr = new int[N];
     }
     public boolean push(int element){
         if(top==N){
-            System.out.println("Stack is Full- Cannot Push");
+            System.out.println("StackList is Full- Cannot Push");
             return false;
         }
         else{
