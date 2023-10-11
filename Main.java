@@ -18,8 +18,8 @@ public class Main{
             System.exit(1);
         }
         try{
-            // Do function calls here    
-            //evalutePostFix(s,arr);
+               
+            infixToPostfix(s,arr);
             evalutePreFix(s, arr);    
         }
         catch(Exception e){
@@ -77,7 +77,7 @@ public class Main{
         operations(true, s,arr);
     }
 
-    public static void evalutePostFix (String[] s,List arr) throws Exception{
+    public static void infixToPostfix (String[] s,List arr) throws Exception{
         if(!s[s.length-1].equals("+") && !s[s.length-1].equals("-") && !s[s.length-1].equals("*") && !s[s.length-1].equals("/"))
             throw new Exception("Invalid Expression for PostFix");
         operations(false,s,arr);
