@@ -6,7 +6,7 @@ public class Main{
         //System.out.println("Enter Expression: ");
         //String exp = input.nextLine();
         //exp = exp.trim();
-        String exp = "( 1 + 2 ) * ( 3 + 4 )";
+        String exp = "1 + 2 * 3 + 4";
         exp = exp.trim();
         List arr = new StackList(exp.length());
         String[] s;
@@ -231,16 +231,58 @@ public class Main{
                     if ((temp == 42 || temp == 47) && (operator_ascii == 42 || operator_ascii == 47)){
                         arr.pop();
                         postFix = postFix+ " " + (char)temp;
-                        arr.push(operator_ascii);
+                        int topArr = arr.pop();
+                        if(topArr==operator_ascii){
+                            arr.push(topArr);
+                            postFix = postFix + " " + (char)topArr;
+                        }
+                        else{
+                            arr.push(topArr);
+                            arr.push(operator_ascii);
+                        }
+                    }
+                    else if ((temp == 42 || temp == 47) && (operator_ascii == 43 || operator_ascii == 45)){
+                        arr.pop();
+                        postFix = postFix + " " + (char)temp;
+                        int topArr = arr.pop();
+                        if(topArr==operator_ascii){
+                            arr.push(topArr);
+                            postFix = postFix + " " + (char)topArr;
+                        }
+                        else{
+                            arr.push(topArr);
+                            arr.push(operator_ascii);
+                        }   
                     }
                     else if ((temp == 43 || temp == 45) && (operator_ascii == 43 || operator_ascii == 45)){
                         arr.pop();
                         postFix = postFix + " " + (char)temp;
-                        arr.push(operator_ascii);
+                        int topArr = arr.pop();
+                        if(topArr==operator_ascii){
+                            arr.push(topArr);
+                            postFix = postFix + " " + (char)topArr;
+                        }
+                        else{
+                            arr.push(topArr);
+                            arr.push(operator_ascii);
+                        }
                     }
                     else if ((temp == 43 || temp == 45) && (operator_ascii == 42 || operator_ascii == 47)){
                         arr.push(operator_ascii);
                         continue;
+                    }
+                    else if (temp==operator_ascii){
+                        arr.pop();
+                        postFix = postFix + " " + (char)temp;
+                        int topArr = arr.pop();
+                        if(topArr==operator_ascii){
+                            arr.push(topArr);
+                            postFix = postFix + " " + (char)topArr;
+                        }
+                        else{
+                            arr.push(topArr);
+                            arr.push(operator_ascii);
+                        }
                     }
                     else if(operator_ascii == 41){
                         while(true){
