@@ -6,7 +6,8 @@ public class Main{
         //System.out.println("Enter Expression: ");
         //String exp = input.nextLine();
         //exp = exp.trim();
-        String exp = "( 10 + 17 * 2 / ( 3 - 2 ) )";
+        String exp = "( 1 + 2 ) * ( 3 + 4 )";
+        exp = exp.trim();
         List arr = new StackList(exp.length());
         String[] s;
         if (exp.contains(","))
@@ -185,16 +186,16 @@ public class Main{
     }
 
     public static String infixToPostfix(String[] s,List arr) throws Exception{
-        int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
+        int num=0,operator_ascii=0;
         char operator;
         boolean flag_operator=false; 
-        boolean flag_okay_to_push = false;
+        
         String postFix="";
 
         for(int i=0;i<s.length;i++){
             try{                                    // Checking for integer
                 num = Integer.parseInt(s[i]);
-                postFix = postFix+" "+num;
+                postFix = postFix+" "+ num;
                 flag_operator = false;
                 continue;
             }
@@ -212,12 +213,20 @@ public class Main{
                         flag_operator = false;
                         continue;}
                 else{
-                    temp = arr.pop();           // Getting the top of stack
-                    arr.push(temp);
+                    try{
+                        temp = arr.pop();           // Getting the top of stack
+                        arr.push(temp);
+                    }
+                    catch(Exception e){
+                        arr.push(operator_ascii);
+                        temp = arr.pop();           // Getting the top of stack
+                        arr.push(temp);
+                        continue;
+                    }
                 }
                 
 
-                if(temp == 40 )                             // add support for other brackets here later
+                if(temp == 40 )
                     arr.push(operator_ascii);
                 else{
                     if ((temp == 42 || temp == 47) && (operator_ascii == 42 || operator_ascii == 47)){
@@ -256,12 +265,20 @@ public class Main{
 
             }
 
-    
-
-
-
     }
-    return postFix;
+    if(!arr.isEmpty()){
+        while(true){
+            try{
+                int temp = arr.pop();
+                postFix = postFix + " " + (char)temp;
+            }
+            catch(Exception e){
+                break;
+            }
+                
+        }
+    }
+    return postFix.trim();
 
 }
 
