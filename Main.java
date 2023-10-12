@@ -3,9 +3,10 @@ import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter Expression: ");
-        String exp = input.nextLine();
-        exp = exp.trim();
+        //System.out.println("Enter Expression: ");
+        //String exp = input.nextLine();
+        //exp = exp.trim();
+        String exp = "( 10 + 17 * 2 / ( 3 - 2 ) )";
         List arr = new StackList(exp.length());
         String[] s;
         if (exp.contains(","))
@@ -18,9 +19,12 @@ public class Main{
             System.exit(1);
         }
         try{
-               
-            infixToPostfix(s,arr);
-            evalutePreFix(s, arr);    
+            // Do the evaluation by function call
+            //float result = postfixEvaluation(s,arr);
+            //float result2 = prefixEvaluation(s, arr); 
+            //System.out.println("Postfix Evaluation: "+result);
+            //System.out.println("Prefix Evaluation: "+result2);
+            System.out.println(infixToPostfix(s, arr));
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -41,15 +45,37 @@ public class Main{
             }
             catch(NumberFormatException e){
             }
-            if(!subset.equals("+") && !subset.equals("-") && !subset.equals("*") && !subset.equals("/"))
+            if(!subset.equals("+") && !subset.equals("-") && !subset.equals("*") && !subset.equals("/") && !subset.equals("(") && !subset.equals(")") && !subset.equals("{") && !subset.equals("}") && !subset.equals("[") && !subset.equals("]"))
                     return false;
                 else
-                    operators++;        
+                    if(!subset.equals("(") && !subset.equals(")") && !subset.equals("{") && !subset.equals("}") && !subset.equals("[") && !subset.equals("]"))
+                        operators++;
+    
+                                
         }
         
         if(operators+1 != operands)                                                     // Handling invalid number of operators and operands
             return false;
-        
+        int openBracket=0,closedBracket=0,openBraces=0,closedbraces=0,openSquareBracket=0,closedSquareBracket=0;
+        for(String subset : expression){
+            try{
+                Integer.parseInt(subset);
+            }
+            catch(NumberFormatException e ){
+                
+                int operator = subset.charAt(0);
+                int operator_ascii = (int) operator;
+                if(operator_ascii == 40){openBracket+=1;}
+                if(operator_ascii == 41){closedBracket+=1;}
+                if(operator_ascii == 123){openBraces+=1;}
+                if(operator_ascii == 125){closedbraces+=1;}
+                if(operator_ascii == 91){openSquareBracket+=1;}
+                if(operator_ascii == 93){closedSquareBracket+=1;}
+                
+            }
+        }
+        if(openBracket != closedBracket || openBraces != closedbraces || openSquareBracket != closedSquareBracket)
+                    return false;
         return true;
         
     }
@@ -63,7 +89,7 @@ public class Main{
      *    - Operator: If the scanned character is an operator, pop two elements from the stack, perform the operation and push the result back onto the stack.
      * 3. At the end of the scanning, the stack will contain the final result of the prefix expression.
      */
-    public static void evalutePreFix(String[] s, List arr) throws Exception{
+    public static float prefixEvaluation(String[] s, List arr) throws Exception{
         if(s[s.length-1].equals("+") || s[s.length-1].equals("-") || s[s.length-1].equals("*") || s[s.length-1].equals("/"))
             throw new Exception("Invalid Expression for PreFix");
                                                                                 // Reversing the Order of Prefix expression by using built in Stack
@@ -74,17 +100,17 @@ public class Main{
         for (int i = 0; i < s.length; i++) {
             s[i] = stack.pop();
         }
-        operations(true, s,arr);
+        return operations(true, s,arr);
     }
 
-    public static void infixToPostfix (String[] s,List arr) throws Exception{
+    public static float postfixEvaluation (String[] s,List arr) throws Exception{
         if(!s[s.length-1].equals("+") && !s[s.length-1].equals("-") && !s[s.length-1].equals("*") && !s[s.length-1].equals("/"))
             throw new Exception("Invalid Expression for PostFix");
-        operations(false,s,arr);
+        return operations(false,s,arr);
     }
 
     //  Important note : In postfix , we first pop operand 2 , in prefix we first pop operand 1
-    public static void operations(boolean flag,String[] s,List arr) throws Exception{
+    public static float operations(boolean flag,String[] s,List arr) throws Exception{
         int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
         char operator;
         boolean flag_num=false;
@@ -155,11 +181,91 @@ public class Main{
             }
             
         }
-        System.out.println("Final answer is : "+arr.pop());
+        return arr.pop();
     }
+
+    public static String infixToPostfix(String[] s,List arr) throws Exception{
+        int num=0,operand1=0,operand2=0,operator_ascii=0,solution=0;
+        char operator;
+        boolean flag_operator=false; 
+        boolean flag_okay_to_push = false;
+        String postFix="";
+
+        for(int i=0;i<s.length;i++){
+            try{                                    // Checking for integer
+                num = Integer.parseInt(s[i]);
+                postFix = postFix+" "+num;
+                flag_operator = false;
+                continue;
+            }
+            catch(NumberFormatException e){
+                operator = s[i].charAt(0);
+                operator_ascii = (int) operator;
+                flag_operator = true;
+            }
+
+            if (flag_operator){
+                int temp=0;
+                if(operator_ascii==40)                      // add support for other brackets here later
+                    {
+                        arr.push(operator_ascii);
+                        flag_operator = false;
+                        continue;}
+                else{
+                    temp = arr.pop();           // Getting the top of stack
+                    arr.push(temp);
+                }
+                
+
+                if(temp == 40 )                             // add support for other brackets here later
+                    arr.push(operator_ascii);
+                else{
+                    if(temp==42 || temp == 47 && operator_ascii == 42 && operator_ascii == 47){
+                        arr.pop();
+                        postFix = postFix+ " " + temp;
+                        arr.push(temp);
+                    }
+                    else if(temp == 43 || temp == 45 && operator_ascii == 43 || operator_ascii == 45){
+                        arr.pop();
+                        postFix = postFix + " " + temp;
+                        arr.push(temp);
+                    }
+                    else if(temp == 43 || temp == 45 && operator_ascii == 42 && operator_ascii == 47){
+                        arr.push(operator_ascii);
+                        continue;
+                    }
+                    else if(temp == 41){
+                        while(true){
+                            int temp2 = arr.pop();
+                            if (temp2 == 40)
+                                break;
+                            else{
+                                postFix = postFix + " " + temp;
+                            }
+                        }
+                    }
+                }
+                
+                
+                
+                
+                
+                flag_operator = false;
+
+
+
+            }
+
+    
+
+
+
+    }
+    return postFix;
+
 }
 
-
+}
 
 abstract class List{
     abstract boolean push(int element);
@@ -171,6 +277,7 @@ class StackList extends List{
     int top;
     int N;                  // Total Size of Array;
     int arr[];
+
     public StackList(){
         top=0;
         N=5;
