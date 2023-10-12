@@ -207,7 +207,7 @@ public class Main{
 
             if (flag_operator){
                 int temp=0;
-                if(operator_ascii==40)                      // add support for other brackets here later
+                if(operator_ascii==40)                      
                     {
                         arr.push(operator_ascii);
                         flag_operator = false;
@@ -225,7 +225,6 @@ public class Main{
                     }
                 }
                 
-
                 if(temp == 40 )
                     arr.push(operator_ascii);
                 else{
@@ -254,18 +253,11 @@ public class Main{
                         }
                     }
                 }
-                
-                
-                
-                
-                
                 flag_operator = false;
-
-
-
             }
 
     }
+                                        // Emptying Stack if not emptied into the expression
     if(!arr.isEmpty()){
         while(true){
             try{
