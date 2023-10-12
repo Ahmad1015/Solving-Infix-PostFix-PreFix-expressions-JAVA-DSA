@@ -220,27 +220,27 @@ public class Main{
                 if(temp == 40 )                             // add support for other brackets here later
                     arr.push(operator_ascii);
                 else{
-                    if(temp==42 || temp == 47 && operator_ascii == 42 && operator_ascii == 47){
+                    if ((temp == 42 || temp == 47) && (operator_ascii == 42 || operator_ascii == 47)){
                         arr.pop();
-                        postFix = postFix+ " " + temp;
-                        arr.push(temp);
+                        postFix = postFix+ " " + (char)temp;
+                        arr.push(operator_ascii);
                     }
-                    else if(temp == 43 || temp == 45 && operator_ascii == 43 || operator_ascii == 45){
+                    else if ((temp == 43 || temp == 45) && (operator_ascii == 43 || operator_ascii == 45)){
                         arr.pop();
-                        postFix = postFix + " " + temp;
-                        arr.push(temp);
+                        postFix = postFix + " " + (char)temp;
+                        arr.push(operator_ascii);
                     }
-                    else if(temp == 43 || temp == 45 && operator_ascii == 42 && operator_ascii == 47){
+                    else if ((temp == 43 || temp == 45) && (operator_ascii == 42 || operator_ascii == 47)){
                         arr.push(operator_ascii);
                         continue;
                     }
-                    else if(temp == 41){
+                    else if(operator_ascii == 41){
                         while(true){
                             int temp2 = arr.pop();
                             if (temp2 == 40)
                                 break;
                             else{
-                                postFix = postFix + " " + temp;
+                                postFix = postFix + " " + (char)temp2;
                             }
                         }
                     }
